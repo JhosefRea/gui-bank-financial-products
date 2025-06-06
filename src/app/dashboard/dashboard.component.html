@@ -1,1 +1,11 @@
-<p>dashboard works!</p>
+<div class="product-list">
+    <h2>Lista de Productos</h2>
+    <div *ngFor="let product of products" class="product-card">
+      <img [src]="product.logo" alt="{{ product.name }}">
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.description }}</p>
+      <small>Fecha de lanzamiento: {{ product.date_release }}</small>
+      <small>Última revisión: {{ product.date_revision }}</small>
+    </div>
+  </div>
+  
