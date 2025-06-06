@@ -46,6 +46,20 @@ export class FetchApiProductsService {
       );
   }
 
+  public createProduct(productData: ProductDTO): Observable<ProductDTO> {
+    return this.http
+      .post<ProductDTO>(FetchApiProductsService.apiUrl, productData)
+      .pipe(
+        catchError(error => this.handleError(error))
+      );
+  }
+
+  verifyIdExists(id: string): Observable<boolean> {
+    return this.http.get<{ exists: boolean }>(`${FetchApiProductsService.apiUrl}/verification/${id}`)
+      .pipe(map(res => res.exists));
+  }
+
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
