@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { Observable} from 'rxjs';
 
 import { FetchApiProductsService } from '../../../services/fetch-api-products.service';
+import { AppRoutes } from '../../../shared/utils/enums/product.enum';
 
 @Component({
   selector: 'app-product-create',
@@ -58,7 +59,7 @@ export class ProductCreateComponent implements OnInit {
           console.log('Producto creado exitosamente:', response);
           alert('Producto creado con éxito');
           this.productForm.reset();
-          this.router.navigate(['/dashboard'])
+          this.router.navigate([AppRoutes.Dashboard])
         },
         error: (error) => {
           console.error('Error al crear el producto:', error);
