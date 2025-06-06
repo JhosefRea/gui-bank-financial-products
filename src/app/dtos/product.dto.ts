@@ -1,8 +1,9 @@
 export interface ProductDTO {
-    id: string;
+    [id: string]: string; // Funciona únicamente si todos los campos son STRING
     name: string;
     description: string;
     logo: string;
-    date_release: string; // Puede ser Date si deseas convertirlo
-    date_revision: string; // Igual, si lo quieres como Date
+    date_release: string; 
+    date_revision: string; 
+
 }

@@ -7,6 +7,8 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { ProductDTO } from '../app/dtos/product.dto';
+import { IProductOrderedKeys } from '../app/interfaces/ProductOrderedKeys.interface';
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +23,22 @@ export class FetchApiProductsService {
       .get<{ data: ProductDTO[] }>(FetchApiProductsService.apiUrl)
       .pipe(
         map(res => {
-          const products = this.extractResponseData(res);
+          let products = this.extractResponseData(res);
           console.log('Productos recibidos:', products); 
+          
+          const order = ['logo', 'name', 'description', 'date_release', 'date_revision'];
+
+          // Reordenar cada producto según 'order'
+          const orderedProducts = products.map(product => {
+            const orderedProduct: IProductOrderedKeys = {};
+            order.forEach(key => {
+              orderedProduct[key] = product[key];
+            });
+            return orderedProduct;
+          });
+          
+          console.log('Productos ordenados:', orderedProducts); 
+          products = orderedProducts
           return products;
         }),
         catchError(this.handleError)

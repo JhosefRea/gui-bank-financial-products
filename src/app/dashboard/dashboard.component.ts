@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FetchApiProductsService } from '../../services/fetch-api-products.service';
 import { CommonModule } from '@angular/common';
 
+import { FetchApiProductsService } from '../../services/fetch-api-products.service';
 import { ProductDTO } from '../dtos/product.dto';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +13,9 @@ import { ProductDTO } from '../dtos/product.dto';
 })
 export class DashboardComponent implements OnInit {
   products: ProductDTO[] = [];
+  columnKeys: string[] = [];
+  columnLabels: string[] = ['Logo', 'Nombre del producto', 'Descripción', 'Fecha de liberación', 'Fecha de reestructuración'];
+
 
   constructor(private fetchApiProducts: FetchApiProductsService) {}
 
@@ -19,15 +23,17 @@ export class DashboardComponent implements OnInit {
     this.getProducts();
   }
 
-  // Fetch invoices from the service
   getProducts(): void {
     this.fetchApiProducts.getAll().subscribe({
       next: (data: ProductDTO[]) => {
         this.products = data;
-        console.log('Invoices fetched successfully:', this.products);
+        if (data.length > 0) {
+          this.columnKeys = Object.keys(data[0]).filter(i => i !== 'id'); 
+        }
+        console.log('products fetched successfully:', this.products);
       },
       error: (err) => {
-        console.error('Error fetching invoices:', err);
+        console.error('Error fetching products:', err);
       },
     });
   }

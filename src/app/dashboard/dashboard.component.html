@@ -1,11 +1,12 @@
-<div class="product-list">
-    <h2>Lista de Productos</h2>
-    <div *ngFor="let product of products" class="product-card">
-      <img [src]="product.logo" alt="{{ product.name }}">
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.description }}</p>
-      <small>Fecha de lanzamiento: {{ product.date_release }}</small>
-      <small>Última revisión: {{ product.date_revision }}</small>
-    </div>
-  </div>
-  
+<table border="1">
+  <thead>
+    <tr>
+      <th *ngFor="let label of columnLabels">{{ label }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td *ngFor="let id of columnKeys">{{ product?.[id] }}</td>
+    </tr>
+  </tbody>
+</table>
