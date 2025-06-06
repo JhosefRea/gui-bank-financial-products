@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, AsyncValidatorFn, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { Observable} from 'rxjs';
+
 import { FetchApiProductsService } from '../../../services/fetch-api-products.service';
 
 @Component({
@@ -16,7 +18,8 @@ export class ProductCreateComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private productService: FetchApiProductsService
+    private productService: FetchApiProductsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +58,7 @@ export class ProductCreateComponent implements OnInit {
           console.log('Producto creado exitosamente:', response);
           alert('Producto creado con éxito');
           this.productForm.reset();
+          this.router.navigate(['/dashboard'])
         },
         error: (error) => {
           console.error('Error al crear el producto:', error);

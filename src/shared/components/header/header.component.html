@@ -1,9 +1,8 @@
-<div>
-    <input
-      type="text"
-      [(ngModel)]="searchText"
-      placeholder="Buscar productos..."
-    />
-    <button routerLink="/productos/crear">Agregar</button>
+<div *ngIf="router.url === '/dashboard'">
+  <input
+    type="text"
+    [(ngModel)]="searchText"
+    placeholder="Buscar productos..."
+  />
+  <button routerLink="/productos/crear">Agregar</button>
 </div>
-  
