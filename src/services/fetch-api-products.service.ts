@@ -8,6 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { ProductDTO } from '../app/dtos/product.dto';
 import { IProductOrderedKeys } from '../app/interfaces/ProductOrderedKeys.interface';
+import { ProductKeys } from '../shared/utils/enums/product.enum';
 
 
 @Injectable({
@@ -26,7 +27,7 @@ export class FetchApiProductsService {
           let products = this.extractResponseData(res);
           console.log('Productos recibidos:', products); 
           
-          const order = ['logo', 'name', 'description', 'date_release', 'date_revision'];
+          const order: string[] = Object.values(ProductKeys);
 
           // Reordenar cada producto según 'order'
           const orderedProducts = products.map(product => {

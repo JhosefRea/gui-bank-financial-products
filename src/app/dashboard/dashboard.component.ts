@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FetchApiProductsService } from '../../services/fetch-api-products.service';
 import { ProductDTO } from '../dtos/product.dto';
+import { ProductLabels } from '../../shared/utils/enums/product.enum';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { ProductDTO } from '../dtos/product.dto';
 export class DashboardComponent implements OnInit {
   products: ProductDTO[] = [];
   columnKeys: string[] = [];
-  columnLabels: string[] = ['Logo', 'Nombre del producto', 'Descripción', 'Fecha de liberación', 'Fecha de reestructuración'];
+  columnLabels: string[] = Object.values(ProductLabels);
 
 
   constructor(private fetchApiProducts: FetchApiProductsService) {}
