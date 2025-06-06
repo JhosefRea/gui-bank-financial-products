@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-
 import { Router, RouterLink } from '@angular/router';
+
+
+import { AppRoutes } from '../../utils/enums/product.enum';
 
 @Component({
   selector: 'app-header',
@@ -13,9 +14,11 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class HeaderComponent {
   searchText: string = '';
+  AppRoutes = AppRoutes;
 
   @Output() search = new EventEmitter<string>();
   @Output() add = new EventEmitter<void>();
+  
 
   constructor(public router: Router) {}
 

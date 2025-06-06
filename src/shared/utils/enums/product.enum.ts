@@ -7,9 +7,17 @@ export enum ProductLabels {
 }
 
 export enum ProductKeys {
+    Id = 'id',
     Logo = 'logo',
     Name = 'name',
     Description = 'description',
     DateRelease = 'date_release',
     DateRevision = 'date_revision'
 }
+
+export enum AppRoutes {
+    Dashboard = '/dashboard',
+    CreateProduct = '/product/create',
+    EditProduct = '/product',
+}
+  

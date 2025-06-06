@@ -2,11 +2,20 @@
   <thead>
     <tr>
       <th *ngFor="let label of columnLabels">{{ label }}</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let product of products">
-      <td *ngFor="let id of columnKeys">{{ product?.[id] }}</td>
+      <td *ngFor="let i of columnKeys">{{ product?.[i] }}</td>
+      <td>
+        <div class="dropdown">
+          <button (click)="toggleDropdown(product['id'])">⋮</button>
+          <div *ngIf="openDropdownId === product['id']">
+            <button (click)="onEdit(product)">Editar</button>
+          </div>
+        </div>
+      </td>
     </tr>
   </tbody>
 </table>
