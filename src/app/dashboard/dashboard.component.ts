@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 import { FetchApiProductsService } from '../../services/fetch-api-products.service';
@@ -11,7 +12,7 @@ import { extractColumnKeys } from '../../shared/utils/utils';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -22,6 +23,11 @@ export class DashboardComponent implements OnInit {
 
   //EDIT
   openDropdownId: string | null = null;
+
+  //PAGINATION
+  pageSizes: number[] = [5, 10, 20];
+  itemsPerPage: number = 5;
+  paginatedProducts: ProductDTO[] = []; // Visibles según el select
 
   constructor(
     private fetchApiProducts: FetchApiProductsService, 
@@ -50,6 +56,7 @@ export class DashboardComponent implements OnInit {
     this.openDropdownId = this.openDropdownId === productId ? null : productId;
   }
 
+  // EDIT
   onEdit(product: ProductDTO): void {
     if (product?.['id']) {
       this.router.navigate([AppRoutes.EditProduct, product['id']]);
@@ -57,6 +64,15 @@ export class DashboardComponent implements OnInit {
     } else {
       console.warn('Producto sin ID, no se puede renderizar:', product);
     }
+  }
+
+  // PAGINATION
+  onItemsPerPageChange(): void {
+    this.updatePaginatedProducts();
+  }
+
+  updatePaginatedProducts(): void {
+    this.paginatedProducts = this.products.slice(0, this.itemsPerPage);
   }
   
 }

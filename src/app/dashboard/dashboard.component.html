@@ -19,3 +19,13 @@
     </tr>
   </tbody>
 </table>
+
+<!-- Paginación -->
+<div class="pagination-controls">
+  <span>{{ products.length }} Resultados</span>
+  <label>
+    <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+      <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+    </select>
+  </label>
+</div>
