@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/ngx-toastr/toastr.css";
+
+html {
+  font-family: "League Spartan", sans-serif;
+}
+.toast-progress {
+  border-radius: 5px;
+  border: 4px solid black;
+}
