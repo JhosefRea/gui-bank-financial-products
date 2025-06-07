@@ -1,14 +1,32 @@
 # BankFinancialProducts
+# 🚀 PROYECTO FRONT-END. Sistema de gestión de productos financieros.
+
+Este es un proyecto de gestión de productos financieros utilizando **Angular** como framework web con la adopción de CSS PURO. **NodeJs** como back-end, esta solución web se ha desarrollado en un entorno local Ubuntu 22.04. Se utiliza **Arquitectura Modular** **SOLID** **Clean Code** para garantizar un código modular, escalable y fácil de mantener.⚡️
+
+## 📋 Requisitos
+- **NodeJs 20+**
+- **Angular 19+**
+
+## 🔧 Instalación
+# 📖 Pasos para instalar y ejecutar el proyecto
+
+1. **Clonar el repositorio**
+
+2. **Instalar las dependencias**
+```bash
+npm i
+```
+
+5. **Crea tu archivo enviroment.ts**
+Guíate en el archivo .env.example
+
+6. **Ejecutar el servidor de FastAPI y de Angular**
+```bash
+ng serve 
+```
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
 
-## Development server
-
-To start a local development server, run:
-
-```bash
-ng serve
-```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
