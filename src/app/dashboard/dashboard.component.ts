@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 
 import { FetchApiProductsService } from '../../services/fetch-api-products.service';
+import { ProductStateService } from '../../services/product-state.service';
 import { ProductDTO } from '../dtos/product.dto';
 import { ProductLabels, AppRoutes } from '../../shared/utils/enums/product.enum';
 import { extractColumnKeys } from '../../shared/utils/utils';
@@ -18,9 +19,15 @@ export class DashboardComponent implements OnInit {
   products: ProductDTO[] = [];
   columnKeys: string[] = [];
   columnLabels: string[] = Object.values(ProductLabels);
+
+  //EDIT
   openDropdownId: string | null = null;
 
-  constructor(private fetchApiProducts: FetchApiProductsService, private router: Router) {}
+  constructor(
+    private fetchApiProducts: FetchApiProductsService, 
+    private router: Router,
+    private productStateService: ProductStateService
+  ) {}
 
   ngOnInit(): void {
     this.getProducts();
@@ -43,12 +50,14 @@ export class DashboardComponent implements OnInit {
     this.openDropdownId = this.openDropdownId === productId ? null : productId;
   }
 
-  onEdit(product: any): void {
-    if (product?.id) {
-      this.router.navigate([AppRoutes.EditProduct, product.id]);
+  onEdit(product: ProductDTO): void {
+    if (product?.['id']) {
+      this.router.navigate([AppRoutes.EditProduct, product['id']]);
+      this.productStateService.selectProduct(product)
     } else {
       console.warn('Producto sin ID, no se puede renderizar:', product);
     }
   }
+  
 }
 

@@ -58,14 +58,8 @@
         <!-- Fecha de Revisión -->
         <label>
             Fecha de Revisión:
-            <input type="date" formControlName="date_revision" />
+            <input type="date" formControlName="date_revision" readonly />
         </label>
-        <div class="error" *ngIf="productForm.get('date_revision')?.touched && productForm.get('date_revision')?.invalid">
-            <div *ngIf="productForm.get('date_revision')?.errors?.['required']">Fecha no válida!</div>
-            <div *ngIf="productForm.get('date_revision')?.errors?.['revisionDateInvalid']">
-            Debe ser exactamente un año posterior a la fecha de liberación.
-            </div>
-        </div>
 
         <!-- Botones -->
         <div class="buttons">

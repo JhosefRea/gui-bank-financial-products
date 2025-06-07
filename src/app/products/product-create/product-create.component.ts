@@ -1,15 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, AsyncValidatorFn, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormGroup,
+  AsyncValidatorFn,
+  AbstractControl,
+  ValidationErrors,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs/operators';
-import { Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { FetchApiProductsService } from '../../../services/fetch-api-products.service';
 import { AppRoutes } from '../../../shared/utils/enums/product.enum';
 
 @Component({
   selector: 'app-product-create',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './product-create.component.html',
   styleUrl: './product-create.component.css'
@@ -34,22 +43,27 @@ export class ProductCreateComponent implements OnInit {
       description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
       logo: ['', Validators.required],
       date_release: ['', [Validators.required, this.releaseDateValidator()]],
-      date_revision: ['', [Validators.required, this.DateValidator()]],
+      date_revision: ['',],
     });
 
-    // Volver a validar la fecha de revisión si cambia la de liberación
-    this.productForm.get('date_release')?.valueChanges.subscribe(() => {
-      this.productForm.get('date_revision')?.updateValueAndValidity();
+    // Valor por defecto de date_revision basado en date_release
+    this.productForm.get('date_release')?.valueChanges.subscribe(value => {
+      if (value) {
+        const releaseDate = new Date(value);
+        const revisionDate = new Date(releaseDate);
+        revisionDate.setFullYear(revisionDate.getFullYear() + 1);
+        const formattedRevisionDate = revisionDate.toISOString().split('T')[0];
+
+        this.productForm.get('date_revision')?.setValue(formattedRevisionDate, { emitEvent: false });
+        this.productForm.get('date_revision')?.markAsTouched();
+      }
     });
   }
 
-
-  // Reiniciar
   onReset(): void {
     this.productForm.reset();
   }
 
-  // Enviar el formulario
   onSubmit(): void {
     if (this.productForm.valid) {
       const formData = this.productForm.value;
@@ -59,7 +73,7 @@ export class ProductCreateComponent implements OnInit {
           console.log('Producto creado exitosamente:', response);
           alert('Producto creado con éxito');
           this.productForm.reset();
-          this.router.navigate([AppRoutes.Dashboard])
+          this.router.navigate([AppRoutes.Dashboard]);
         },
         error: (error) => {
           console.error('Error al crear el producto:', error);
@@ -71,8 +85,6 @@ export class ProductCreateComponent implements OnInit {
     }
   }
 
-
-  // Validación: fecha de liberación ≥ hoy
   releaseDateValidator() {
     return (control: AbstractControl): ValidationErrors | null => {
       const today = new Date().toISOString().split('T')[0];
@@ -80,34 +92,12 @@ export class ProductCreateComponent implements OnInit {
     };
   }
 
-  // Validación: revisión = liberación + 1 año
-  DateValidator() {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const release = this.productForm?.get('date_release')?.value;
-      if (!release || !control.value) return null;
-      const releaseDate = new Date(release);
-      const revisionDate = new Date(control.value);
-
-      releaseDate.setFullYear(releaseDate.getFullYear() + 1);
-
-      const releaseFormatted = releaseDate.toISOString().split('T')[0];
-      const revisionFormatted = revisionDate.toISOString().split('T')[0];
-
-      return revisionFormatted === releaseFormatted ? null : { revisionDateInvalid: true };
-    };
-  }
-
-  // Validación Asíncrona de ID duplicado en el FORMGROUP
   idExistsValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const id = control.value;
-
       return this.productService.verifyIdExists(id).pipe(
         map(exists => (exists ? { idExists: true } : null))
       );
     };
   }
-
-  
 }
-

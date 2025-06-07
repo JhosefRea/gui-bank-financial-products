@@ -17,9 +17,9 @@ import { ProductKeys } from '../shared/utils/enums/product.enum';
   providedIn: 'root'
 })
 export class FetchApiProductsService {
-  static apiUrl = environment.apiUrl;
+  private static readonly apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   public getAll(): Observable<ProductDTO[]> {
     return this.http
@@ -56,11 +56,22 @@ export class FetchApiProductsService {
       );
   }
 
+  public updateProduct(productId: string, productData: any): Observable<any> {
+    console.log(
+      '--------------putproduct SERVICE------------------------------',
+      productData
+    );
+    return this.http
+      .put(`${FetchApiProductsService.apiUrl}/${productId}`, productData)
+      .pipe(
+        map((res: any) => this.extractResponseData(res)), catchError(this.handleError)
+      );
+  }
+
   verifyIdExists(id: string): Observable<boolean> {
     return this.http.get<{ exists: boolean }>(`${FetchApiProductsService.apiUrl}/verification/${id}`)
       .pipe(map(res => res.exists));
   }
-
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
@@ -71,7 +82,7 @@ export class FetchApiProductsService {
         `Error Body: ${JSON.stringify(error.error)}`
       );
     }
-    return throwError(() => new Error('Error in conection to API'));
+    return throwError(() => new Error(`API Error: ${error.message}`));
   }
 
   private extractResponseData(res: { data: any[] }): any[] {
