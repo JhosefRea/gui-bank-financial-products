@@ -2,12 +2,12 @@
   <thead>
     <tr>
       <th *ngFor="let label of columnLabels">{{ label }}</th>
-      <th></th>
+      <th>Acciones</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let product of products">
-      <td *ngFor="let i of columnKeys">{{ product?.[i] }}</td>
+    <tr *ngFor="let product of paginatedItems">
+      <td *ngFor="let key of columnKeys">{{ product?.[key] }}</td>
       <td>
         <div class="dropdown">
           <button (click)="toggleDropdown(product['id'])">⋮</button>
@@ -18,11 +18,17 @@
       </td>
     </tr>
   </tbody>
+  
 </table>
+
 
 <!-- Paginación -->
 <div class="pagination-controls">
   <span>{{ products.length }} Resultados</span>
+  <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+  <span>Página {{ currentPage }} de {{ totalPages }}</span>
+  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+
   <label>
     <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
       <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
